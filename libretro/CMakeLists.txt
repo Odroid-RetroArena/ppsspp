@@ -3,8 +3,7 @@ set(LIBRETRO_SRCS
 	libretro.cpp
 	LibretroGraphicsContext.cpp
 	LibretroGLContext.cpp
-	LibretroVulkanContext.cpp
-	libretro_vulkan.cpp)
+		)
 
 if(WIN32)
 	set(LIBRETRO_SRCS ${LIBRETRO_SRCS}
