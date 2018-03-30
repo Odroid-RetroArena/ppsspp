@@ -100,20 +100,20 @@ SOURCES_C += \
 	$(EXTDIR)/libkirk/kirk_engine.c
 
 SOURCES_C += \
-	$(NATIVEDIR)/ext/libpng17/png.c \
-	$(NATIVEDIR)/ext/libpng17/pngerror.c \
-	$(NATIVEDIR)/ext/libpng17/pngget.c \
-	$(NATIVEDIR)/ext/libpng17/pngmem.c \
-	$(NATIVEDIR)/ext/libpng17/pngread.c \
-	$(NATIVEDIR)/ext/libpng17/pngrio.c \
-	$(NATIVEDIR)/ext/libpng17/pngrtran.c \
-	$(NATIVEDIR)/ext/libpng17/pngrutil.c \
-	$(NATIVEDIR)/ext/libpng17/pngset.c \
-	$(NATIVEDIR)/ext/libpng17/pngtrans.c \
-	$(NATIVEDIR)/ext/libpng17/pngwio.c \
-	$(NATIVEDIR)/ext/libpng17/pngwrite.c \
-	$(NATIVEDIR)/ext/libpng17/pngwtran.c \
-	$(NATIVEDIR)/ext/libpng17/pngwutil.c
+	$(NATIVEDIR)/ext/libpng16/png.c \
+	$(NATIVEDIR)/ext/libpng16/pngerror.c \
+	$(NATIVEDIR)/ext/libpng16/pngget.c \
+	$(NATIVEDIR)/ext/libpng16/pngmem.c \
+	$(NATIVEDIR)/ext/libpng16/pngread.c \
+	$(NATIVEDIR)/ext/libpng16/pngrio.c \
+	$(NATIVEDIR)/ext/libpng16/pngrtran.c \
+	$(NATIVEDIR)/ext/libpng16/pngrutil.c \
+	$(NATIVEDIR)/ext/libpng16/pngset.c \
+	$(NATIVEDIR)/ext/libpng16/pngtrans.c \
+	$(NATIVEDIR)/ext/libpng16/pngwio.c \
+	$(NATIVEDIR)/ext/libpng16/pngwrite.c \
+	$(NATIVEDIR)/ext/libpng16/pngwtran.c \
+	$(NATIVEDIR)/ext/libpng16/pngwutil.c
 
 SOURCES_C += $(EXTDIR)/sfmt19937/SFMT.c
 SOURCES_C   += $(EXTDIR)/xxhash.c
@@ -521,48 +521,48 @@ ifeq ($(WITH_DYNAREC),1)
 					 $(COMMONDIR)/ColorConvNEON.cpp \
 					 $(GPUDIR)/Common/TextureDecoderNEON.cpp
 
-			SOURCES_C += $(NATIVEDIR)/ext/libpng17/arm/arm_init.c \
-				     $(NATIVEDIR)/ext/libpng17/arm/filter_neon_intrinsics.c
+			SOURCES_C += $(NATIVEDIR)/ext/libpng16/arm/arm_init.c \
+				     $(NATIVEDIR)/ext/libpng16/arm/filter_neon_intrinsics.c
 			ASMFILES   += $(NATIVEDIR)/math/fast/fast_matrix_neon.S \
-				      $(NATIVEDIR)/ext/libpng17/arm/filter_neon.S
+				      $(NATIVEDIR)/ext/libpng16/arm/filter_neon.S
 		endif
-   else
-	ifneq (,$(findstring msvc,$(platform)))
-	ifeq (,$(findstring x64,$(platform)))
-		CPUFLAGS += /arch:SSE2
-	endif
-		CPUFLAGS += -D_M_IX86_FP
-	else
-		CPUFLAGS += -msse -msse2
-endif
-      ifeq ($(TARGET_ARCH),x86_64)
-         CPUFLAGS += -D_M_X64 -D_ARCH_64
-      else
-         CPUFLAGS += -D_M_IX86 -D_ARCH_32
-         ifeq (,$(findstring msvc,$(platform)))
-            CPUFLAGS += -m32
-         endif
-      endif
-	   SOURCES_CXX += $(GPUDIR)/Software/SamplerX86.cpp
-	   SOURCES_CXX += $(COMMONDIR)/x64Emitter.cpp \
-						$(COMMONDIR)/ABI.cpp \
-						$(COMMONDIR)/Thunk.cpp \
-						$(COMMONDIR)/CPUDetect.cpp \
-						$(COREDIR)/MIPS/x86/CompReplace.cpp \
-						$(COREDIR)/MIPS/x86/CompBranch.cpp \
-						$(COREDIR)/MIPS/x86/Asm.cpp \
-						$(COREDIR)/MIPS/x86/CompALU.cpp \
-						$(COREDIR)/MIPS/x86/CompVFPU.cpp \
-						$(COREDIR)/MIPS/x86/CompLoadStore.cpp \
-						$(COREDIR)/MIPS/x86/CompFPU.cpp \
-						$(COREDIR)/MIPS/x86/Jit.cpp \
-						$(COREDIR)/MIPS/x86/JitSafeMem.cpp \
-						$(COREDIR)/MIPS/x86/RegCache.cpp \
-						$(COREDIR)/MIPS/x86/RegCacheFPU.cpp \
-						$(GPUDIR)/Common/VertexDecoderX86.cpp
-		SOURCES_C   += $(NATIVEDIR)/math/fast/fast_matrix_sse.c
-   endif
-endif
+  # else
+	#ifneq (,$(findstring msvc,$(platform)))
+	#ifeq (,$(findstring x64,$(platform)))
+		#CPUFLAGS += /arch:SSE2
+	#endif
+		#CPUFLAGS += -D_M_IX86_FP
+	#else
+		#CPUFLAGS += -msse -msse2
+#endif
+ #     ifeq ($(TARGET_ARCH),x86_64)
+  #       CPUFLAGS += -D_M_X64 -D_ARCH_64
+   #   else
+    #     CPUFLAGS += -D_M_IX86 -D_ARCH_32
+     #    ifeq (,$(findstring msvc,$(platform)))
+      #      CPUFLAGS += -m32
+       #  endif
+      #endif
+	#   SOURCES_CXX += $(GPUDIR)/Software/SamplerX86.cpp
+	 #  SOURCES_CXX += $(COMMONDIR)/x64Emitter.cpp \
+	#					$(COMMONDIR)/ABI.cpp \
+	#					$(COMMONDIR)/Thunk.cpp \
+	#					$(COMMONDIR)/CPUDetect.cpp \
+	#					$(COREDIR)/MIPS/x86/CompReplace.cpp \
+	#					$(COREDIR)/MIPS/x86/CompBranch.cpp \
+	#					$(COREDIR)/MIPS/x86/Asm.cpp \
+	#					$(COREDIR)/MIPS/x86/CompALU.cpp \
+	#					$(COREDIR)/MIPS/x86/CompVFPU.cpp \
+	#					$(COREDIR)/MIPS/x86/CompLoadStore.cpp \
+	#					$(COREDIR)/MIPS/x86/CompFPU.cpp \
+	#					$(COREDIR)/MIPS/x86/Jit.cpp \
+	#					$(COREDIR)/MIPS/x86/JitSafeMem.cpp \
+	#					$(COREDIR)/MIPS/x86/RegCache.cpp \
+	#					$(COREDIR)/MIPS/x86/RegCacheFPU.cpp \
+	#					$(GPUDIR)/Common/VertexDecoderX86.cpp
+	#	SOURCES_C   += $(NATIVEDIR)/math/fast/fast_matrix_sse.c
+   #endif
+#endif
 SOURCES_CXX += \
    $(COMMONDIR)/ArmEmitter.cpp \
    $(COMMONDIR)/Arm64Emitter.cpp \
@@ -577,38 +577,38 @@ SOURCES_C += $(EXTDIR)/udis86/decode.c \
 			 $(EXTDIR)/udis86/syn.c \
 			 $(EXTDIR)/udis86/udis86.c
 
-ifeq ($(PLATFORM_EXT), darwin)
+ifeq ($(PLATFORM_EXT), unix)
 	COREFLAGS += -DNO_VULKAN
-else
-	SOURCES_CXX += \
-		$(COMMONDIR)/Vulkan/SPIRVDisasm.cpp \
-		$(COMMONDIR)/Vulkan/VulkanContext.cpp \
-		$(COMMONDIR)/Vulkan/VulkanDebug.cpp \
-		$(COMMONDIR)/Vulkan/VulkanImage.cpp \
-		$(COMMONDIR)/Vulkan/VulkanLoader.cpp \
-		$(COMMONDIR)/Vulkan/VulkanMemory.cpp \
-		$(NATIVEDIR)/thin3d/thin3d_vulkan.cpp \
-		$(NATIVEDIR)/thin3d/VulkanRenderManager.cpp \
-		$(NATIVEDIR)/thin3d/VulkanQueueRunner.cpp \
-		$(GPUDIR)/Vulkan/DepalettizeShaderVulkan.cpp \
-		$(GPUDIR)/Vulkan/DrawEngineVulkan.cpp \
-		$(GPUDIR)/Vulkan/FragmentShaderGeneratorVulkan.cpp \
-		$(GPUDIR)/Vulkan/FramebufferVulkan.cpp \
-		$(GPUDIR)/Vulkan/GPU_Vulkan.cpp \
-		$(GPUDIR)/Vulkan/PipelineManagerVulkan.cpp \
-		$(GPUDIR)/Vulkan/ShaderManagerVulkan.cpp \
-		$(GPUDIR)/Vulkan/StateMappingVulkan.cpp \
-		$(GPUDIR)/Vulkan/StencilBufferVulkan.cpp \
-		$(GPUDIR)/Vulkan/TextureCacheVulkan.cpp \
-		$(GPUDIR)/Vulkan/TextureScalerVulkan.cpp \
-		$(GPUDIR)/Vulkan/VertexShaderGeneratorVulkan.cpp \
-		$(GPUDIR)/Vulkan/VulkanUtil.cpp \
-		$(LIBRETRODIR)/LibretroVulkanContext.cpp \
-		$(LIBRETRODIR)/libretro_vulkan.cpp
+#else
+#	SOURCES_CXX += \
+#		$(COMMONDIR)/Vulkan/SPIRVDisasm.cpp \
+#		$(COMMONDIR)/Vulkan/VulkanContext.cpp \
+#		$(COMMONDIR)/Vulkan/VulkanDebug.cpp \
+#		$(COMMONDIR)/Vulkan/VulkanImage.cpp \
+#		$(COMMONDIR)/Vulkan/VulkanLoader.cpp \
+#		$(COMMONDIR)/Vulkan/VulkanMemory.cpp \
+#		$(NATIVEDIR)/thin3d/thin3d_vulkan.cpp \
+#		$(NATIVEDIR)/thin3d/VulkanRenderManager.cpp \
+#		$(NATIVEDIR)/thin3d/VulkanQueueRunner.cpp \
+#		$(GPUDIR)/Vulkan/DepalettizeShaderVulkan.cpp \
+#		$(GPUDIR)/Vulkan/DrawEngineVulkan.cpp \
+#		$(GPUDIR)/Vulkan/FragmentShaderGeneratorVulkan.cpp \
+#		$(GPUDIR)/Vulkan/FramebufferVulkan.cpp \
+#		$(GPUDIR)/Vulkan/GPU_Vulkan.cpp \
+#		$(GPUDIR)/Vulkan/PipelineManagerVulkan.cpp \
+#		$(GPUDIR)/Vulkan/ShaderManagerVulkan.cpp \
+#		$(GPUDIR)/Vulkan/StateMappingVulkan.cpp \
+#		$(GPUDIR)/Vulkan/StencilBufferVulkan.cpp \
+#		$(GPUDIR)/Vulkan/TextureCacheVulkan.cpp \
+#		$(GPUDIR)/Vulkan/TextureScalerVulkan.cpp \
+#		$(GPUDIR)/Vulkan/VertexShaderGeneratorVulkan.cpp \
+#		$(GPUDIR)/Vulkan/VulkanUtil.cpp \
+#		$(LIBRETRODIR)/LibretroVulkanContext.cpp \
+#		$(LIBRETRODIR)/libretro_vulkan.cpp
 
-	ifeq ($(PLATFORM_EXT), unix)
-		COREFLAGS += -DVK_USE_PLATFORM_XLIB_KHR
-	endif
+	#ifeq ($(PLATFORM_EXT), unix)
+	#	COREFLAGS += -DVK_USE_PLATFORM_XLIB_KHR
+	#endif
 endif
 
 ifeq ($(PLATFORM_EXT), win32)
