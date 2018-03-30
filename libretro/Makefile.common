@@ -608,7 +608,7 @@ ifeq ($(PLATFORM_EXT), unix)
 
 	#ifeq ($(PLATFORM_EXT), unix)
 	#	COREFLAGS += -DVK_USE_PLATFORM_XLIB_KHR
-	#endif
+	endif
 endif
 
 ifeq ($(PLATFORM_EXT), win32)
