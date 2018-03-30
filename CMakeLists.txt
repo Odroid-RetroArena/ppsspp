@@ -76,7 +76,7 @@ endif()
 
 # We only support Vulkan on Unix, Android and Windows.
 if(ANDROID OR WIN32 OR (UNIX AND NOT APPLE))
-  set(VULKAN ON)
+  set(VULKAN OFF)
 else()
   add_definitions(-DNO_VULKAN)
 endif()
@@ -340,6 +340,7 @@ set(CommonARM
 	Common/ColorConvNEON.cpp)
 source_group(ARM FILES ${CommonARM})
 
+if(NOT ARMV7)
 set(CommonARM64
 	Common/Arm64Emitter.h
 	Common/Arm64Emitter.cpp
@@ -347,6 +348,7 @@ set(CommonARM64
 	Common/ArmEmitter.cpp
 	Core/Util/DisArm64.cpp)
 source_group(ARM64 FILES ${CommonARM64})
+endif()
 
 set(CommonMIPS
 	Common/MipsCPUDetect.cpp
@@ -636,9 +638,9 @@ else()
 	set(LIBZIP_LIBRARY libzip)
 endif()
 
-# FindPNG does a few things we don't want. So do it ourselves. Fixed to libpng17
-find_path(PNG_PNG_INCLUDE_DIR NAMES "libpng17/png.h")
-find_library(PNG_LIBRARY NAMES png17 libpng17)
+# FindPNG does a few things we don't want. So do it ourselves. Fixed to libpng16
+find_path(PNG_PNG_INCLUDE_DIR NAMES "libpng16/png.h")
+find_library(PNG_LIBRARY NAMES png16 libpng16)
 find_package(PackageHandleStandardArgs)
 find_package_handle_standard_args(PNG REQUIRED_VARS PNG_LIBRARY PNG_PNG_INCLUDE_DIR)
 if (PNG_FOUND)
@@ -646,36 +648,36 @@ if (PNG_FOUND)
 else()
 	if(ARM)
 		set(PNG_ARM_INCLUDES
-            ext/native/ext/libpng17/arm/arm_init.c
-            ext/native/ext/libpng17/arm/filter_neon.S
-            ext/native/ext/libpng17/arm/filter_neon_intrinsics.c
+            ext/native/ext/libpng16/arm/arm_init.c
+            ext/native/ext/libpng16/arm/filter_neon.S
+            ext/native/ext/libpng16/arm/filter_neon_intrinsics.c
         )
 	endif()
-	add_library(png17 STATIC
-		ext/native/ext/libpng17/pngconf.h
-		ext/native/ext/libpng17/pngdebug.h
-		ext/native/ext/libpng17/png.c
-		ext/native/ext/libpng17/png.h
-		ext/native/ext/libpng17/pngerror.c
-		ext/native/ext/libpng17/pngget.c
-		ext/native/ext/libpng17/pnginfo.h
-		ext/native/ext/libpng17/pnglibconf.h
-		ext/native/ext/libpng17/pngmem.c
-		ext/native/ext/libpng17/pngpread.c
-		ext/native/ext/libpng17/pngpriv.h
-		ext/native/ext/libpng17/pngread.c
-		ext/native/ext/libpng17/pngrio.c
-		ext/native/ext/libpng17/pngrtran.c
-		ext/native/ext/libpng17/pngrutil.c
-		ext/native/ext/libpng17/pngset.c
-		ext/native/ext/libpng17/pngstruct.h
-		ext/native/ext/libpng17/pngtrans.c
-		ext/native/ext/libpng17/pngwio.c
-		ext/native/ext/libpng17/pngwrite.c
-		ext/native/ext/libpng17/pngwtran.c
-		ext/native/ext/libpng17/pngwutil.c
+	add_library(png16 STATIC
+		ext/native/ext/libpng16/pngconf.h
+		ext/native/ext/libpng16/pngdebug.h
+		ext/native/ext/libpng16/png.c
+		ext/native/ext/libpng16/png.h
+		ext/native/ext/libpng16/pngerror.c
+		ext/native/ext/libpng16/pngget.c
+		ext/native/ext/libpng16/pnginfo.h
+		ext/native/ext/libpng16/pnglibconf.h
+		ext/native/ext/libpng16/pngmem.c
+		ext/native/ext/libpng16/pngpread.c
+		ext/native/ext/libpng16/pngpriv.h
+		ext/native/ext/libpng16/pngread.c
+		ext/native/ext/libpng16/pngrio.c
+		ext/native/ext/libpng16/pngrtran.c
+		ext/native/ext/libpng16/pngrutil.c
+		ext/native/ext/libpng16/pngset.c
+		ext/native/ext/libpng16/pngstruct.h
+		ext/native/ext/libpng16/pngtrans.c
+		ext/native/ext/libpng16/pngwio.c
+		ext/native/ext/libpng16/pngwrite.c
+		ext/native/ext/libpng16/pngwtran.c
+		ext/native/ext/libpng16/pngwutil.c
 		${PNG_ARM_INCLUDES} )
-	set(PNG_LIBRARY png17)
+	set(PNG_LIBRARY png16)
 	include_directories(ext/native/ext)
 endif()
 
@@ -1316,7 +1318,7 @@ if(WIN32)
 	list(APPEND GPU_IMPLS ${GPU_D3D9} ${GPU_D3D11})
 endif()
 
-if(ARMV7 OR ARM64)
+if(ARM_NEON)
 	set(GPU_NEON GPU/Common/TextureDecoderNEON.cpp)
 endif()
 set(GPU_SOURCES
